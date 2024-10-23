@@ -40,7 +40,7 @@ rule filter_adata:
         """
         scripts/filter_adata.py \
         --input {input} --output {output} \
-        --min_genes {params.min_genes} \
+        --min_genes {params.min_genes} > {log} 2>&1
         """
 
 rule doublet_detection:
