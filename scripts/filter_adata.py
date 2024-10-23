@@ -12,8 +12,8 @@ parser.add_argument('--min_genes', type=int, required=True)
 args = parser.parse_args()
 input, output, min_genes = args.input, args.output, args.min_genes
 
+# Load and filter on min_genes
 adata = sc.read_10x_h5(input)
-
 sc.pp.filter_cells(adata, min_genes=min_genes)
 
 # Mark mitochondrial, ribosomal, and hemoglobin genes
@@ -28,4 +28,5 @@ sc.pp.calculate_qc_metrics(adata, qc_vars=["mt", "ribo", "hb"], inplace=True, pe
 remove = ["total_counts_mt", "log1p_total_counts_mt", "total_counts_ribo", "log1p_total_counts_ribo", "total_counts_hb", "log1p_total_counts_hb"]
 adata.obs = adata.obs[[x for x in adata.obs.columns if x not in remove]]
 
+# Write changes
 adata.write_h5ad(output)
