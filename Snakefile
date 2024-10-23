@@ -1,7 +1,7 @@
 configfile: "config.yaml"
 PROJECT_ROOT = config["project_root"]
 
-include: "workflows/qc.smk"
+include: "workflows/preprocessing.smk"
 micromamba = True
 
 samples = [x.name.strip("_raw.h5ad") for x in Path(f"{PROJECT_ROOT}/raw_adata").iterdir()]
