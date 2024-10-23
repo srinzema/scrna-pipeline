@@ -1,5 +1,6 @@
 from pathlib import Path
 
+# Remove ambient RNA
 rule cellbender:
     input: f"{PROJECT_ROOT}/raw_adata/{{sample}}_raw.h5ad"
     output: f"{PROJECT_ROOT}/clean_adata/{{sample}}_denoised.h5"
@@ -27,12 +28,12 @@ rule cellbender:
         rmdir {params.temp_dir} 2>/dev/null || true
         """
 
-
+# https://www.sc-best-practices.org/preprocessing_visualization/quality_control.html#filtering-low-quality-cells
 rule filter_adata:
     input: f"{PROJECT_ROOT}/clean_adata/{{sample}}_denoised.h5"
     output: f"{PROJECT_ROOT}/filtered_adata/{{sample}}_filtered.h5"
     log: f"{PROJECT_ROOT}/logs/filter_adata/{{sample}}.log"
-    params: min_genes = config["preprocessing"]["min_genes"]
+    params: min_genes=config["preprocessing"]["min_genes"] or 200
     threads: 1
     conda: "../envs/filtering.yaml"
     shell: 
@@ -41,4 +42,6 @@ rule filter_adata:
         --input {input} --output {output} \
         --min_genes {params.min_genes} \
         """
-        
+
+rule doublet_detection:
+    input: 
