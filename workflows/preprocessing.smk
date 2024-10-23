@@ -6,7 +6,7 @@ rule cellbender:
     output: f"{PROJECT_ROOT}/clean_adata/{{sample}}_denoised.h5"
     log: f"{PROJECT_ROOT}/logs/cellbender/{{sample}}.log"
     params: 
-        total_droplets=config["cellbender"]["total_droplets"]
+        total_droplets=config["cellbender"]["total_droplets"],
         temp_dir=lambda wildcards: f"/tmp/{wildcards.sample}",
         checkpoint_flag=lambda wildcards: f"--checkpoint /tmp/{wildcards.sample}/ckpt.tar.gz" if Path(f"/tmp/{wildcards.sample}/ckpt.tar.gz").exists() else ""
     resources: 
@@ -30,7 +30,7 @@ rule cellbender:
 
 # https://www.sc-best-practices.org/preprocessing_visualization/quality_control.html#filtering-low-quality-cells
 rule filter_adata:
-    input: f"{PROJECT_ROOT}/clean_adata/{{sample}}_denoised.h5"
+    input: rules.cellbender.output
     output: f"{PROJECT_ROOT}/filtered_adata/{{sample}}_filtered.h5"
     log: f"{PROJECT_ROOT}/logs/filter_adata/{{sample}}.log"
     params: min_genes=config["preprocessing"]["min_genes"] or 200
