@@ -1,4 +1,7 @@
 project_root: "/home/slrinzema/Projects/scrna-analysis"
 
+preprocessing:
+  min_genes: 200
+
 cellbender:
-  threads: 8
+  threads: 1000
