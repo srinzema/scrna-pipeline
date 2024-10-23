@@ -44,4 +44,14 @@ rule filter_adata:
         """
 
 rule doublet_detection:
-    input: 
+    input: filter_adata.input
+    output: f"{PROJECT_ROOT}/adata/{{sample}}_singlet.h5"
+    log: f"{PROJECT_ROOT}/logs/doublet_detection/{{sample}}.log"
+    params:
+        n_mads=5,
+        n_mads_mt=3
+    threads: 1
+    conda: "../envs/filtering.yaml"
+    shell:
+        """
+        """
