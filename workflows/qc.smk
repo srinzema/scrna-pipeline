@@ -1,12 +1,11 @@
 from pathlib import Path
 
-
-
 rule cellbender:
     input: f"{PROJECT_ROOT}/raw_adata/{{sample}}_raw.h5ad"
     output: f"{PROJECT_ROOT}/clean_adata/{{sample}}_denoised.h5"
     log: f"{PROJECT_ROOT}/logs/cellbender/{{sample}}.log"
     params: 
+        total_droplets=config["cellbender"]["total_droplets"]
         temp_dir=lambda wildcards: f"/tmp/{wildcards.sample}",
         checkpoint_flag=lambda wildcards: f"--checkpoint /tmp/{wildcards.sample}/ckpt.tar.gz" if Path(f"/tmp/{wildcards.sample}/ckpt.tar.gz").exists() else ""
     resources: 
@@ -27,6 +26,7 @@ rule cellbender:
         # Remove temp_dir only if it is empty
         rmdir {params.temp_dir} 2>/dev/null || true
         """
+
 
 rule filter_adata:
     input: f"{PROJECT_ROOT}/clean_adata/{{sample}}_denoised.h5"

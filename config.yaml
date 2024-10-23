@@ -5,3 +5,4 @@ preprocessing:
 
 cellbender:
   threads: 10
+  total_droplets: 50000
