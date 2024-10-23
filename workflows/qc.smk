@@ -37,7 +37,7 @@ rule filter_adata:
     conda: "../envs/filtering.yaml"
     shell: 
         """
-        ../scripts/filter_adata.py \
+        scripts/filter_adata.py \
         --input {input} --output {output} \
         --min_genes {params.min_genes} \
         """

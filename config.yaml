@@ -4,4 +4,4 @@ preprocessing:
   min_genes: 200
 
 cellbender:
-  threads: 1000
+  threads: 10
