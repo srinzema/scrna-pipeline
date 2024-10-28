@@ -31,7 +31,7 @@ rule cellbender:
 # https://www.sc-best-practices.org/preprocessing_visualization/quality_control.html#filtering-low-quality-cells
 rule filter_adata:
     input: rules.cellbender.output
-    output: f"{PROJECT_ROOT}/filtered_adata/{{sample}}_filtered.h5"
+    output: f"{PROJECT_ROOT}/filtered_adata/{{sample}}_filtered.h5ad"
     log: f"{PROJECT_ROOT}/logs/filter_adata/{{sample}}.log"
     params: min_genes=config["preprocessing"]["min_genes"] or 200
     threads: 1
@@ -45,8 +45,8 @@ rule filter_adata:
 
 # https://www.sc-best-practices.org/preprocessing_visualization/quality_control.html#doublet-detection
 rule doublet_detection:
-    input: rules.filter_adata.input
-    output: f"{PROJECT_ROOT}/adata/{{sample}}_singlet.h5"
+    input: rules.filter_adata.output
+    output: f"{PROJECT_ROOT}/adata/{{sample}}_singlet.h5ad"
     log: f"{PROJECT_ROOT}/logs/doublet_detection/{{sample}}.log"
     params:
         n_mads=5,

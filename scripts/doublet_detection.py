@@ -26,7 +26,7 @@ parser.add_argument('--n_mads_mt', type=int, required=True)
 args = parser.parse_args()
 input, output, n_mads, n_mads_mt = args.input, args.output, args.n_mads, args.n_mads_mt
 
-adata = sc.read_10x_h5(input)
+adata = sc.read_h5ad(input)
 
 # Identify outliers using MAD
 is_outlier = (
