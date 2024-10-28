@@ -43,8 +43,9 @@ rule filter_adata:
         --min_genes {params.min_genes} > {log} 2>&1
         """
 
+# https://www.sc-best-practices.org/preprocessing_visualization/quality_control.html#doublet-detection
 rule doublet_detection:
-    input: filter_adata.input
+    input: rules.filter_adata.input
     output: f"{PROJECT_ROOT}/adata/{{sample}}_singlet.h5"
     log: f"{PROJECT_ROOT}/logs/doublet_detection/{{sample}}.log"
     params:
@@ -54,4 +55,8 @@ rule doublet_detection:
     conda: "../envs/filtering.yaml"
     shell:
         """
+        scripts/doublet_detection.py \
+        --input {input} --output {output} \
+        --n_mads {params.n_mads} \
+        --n_mads_mt {params.n_mads_mt} > {log} 2>&1
         """

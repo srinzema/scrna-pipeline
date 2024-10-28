@@ -1,4 +1,4 @@
-name: /home/slrinzema/micromamba/envs/scrna
+name: filtering
 channels:
   - conda-forge
   - bioconda
